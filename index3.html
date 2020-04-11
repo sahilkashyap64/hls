@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <link type="text/css" rel="stylesheet" href="http://vjs.zencdn.net/5.4.4/video-js.css"/>
-</head>
-<body>
-<video
-    id="vid1"
-    class="video-js vjs-default-skin"
-    controls
-    width="640" height="264"
-    data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "https://www.youtube.com/watch?v=xjS6SftYQaQ"}] }'
-    >
-</video>
-
-
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Video.js + hls.js</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet"><!-- https://getbootstrap.com -->
+    <link href="https://vjs.zencdn.net/5.19.2/video-js.css" rel="stylesheet"><!-- https://videojs.com -->
+    <style type="text/css">
+        .video-js {
+            font-size: 1rem;
+        }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container">
+        <div class="my-5 embed-responsive embed-responsive-16by9">
+            <video id="video" class="embed-responsive-item video-js vjs-default-skin" width="640" height="360" autoplay controls></video>
+        </div>
+        
+        <input type="text" id="myInput">
+        
 <button id="change">change video</button>
+<h2>HLS .m3u8&nbsp;streams for testing</h2>
+<ul>
+  <li>https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8</li>
+  <li>https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8</li>
+  <li>https://mnmedias.api.telequebec.tv/m3u8/29880.m3u8</li>
+  </ul>
+    </div>
+    
 
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="http://vjs.zencdn.net/5.4.4/video.js"></script>
-<script
-    src="https://raw.githubusercontent.com/eXon/videojs-youtube/637a2916c2c4fd2b5fc55dafa3df923a92fec6d0/src/Youtube.js"></script>
-<script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://vjs.zencdn.net/5.19.2/video.js"></script><!-- https://videojs.com -->
+    <script src="js/hls.min.js?v=v0.9.1"></script><!-- https://github.com/video-dev/hls.js -->
+    <script src="js/videojs5-hlsjs-source-handler.min.js?v=0.3.1"></script><!-- https://github.com/streamroot/videojs-hlsjs-plugin -->
+    <script src="js/vjs-quality-picker.js?v=v0.0.2"></script><!-- https://github.com/streamroot/videojs-quality-picker -->
+    <script>
+      //http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8
+     //https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8
 
     (function ($) {
         $(document).ready(function () {
@@ -28,17 +45,21 @@
             // An example of playing with the Video.js javascript API
             // Will start the video and then switch the source 3 seconds latter
             // You can look at the doc there: http://docs.videojs.com/docs/guides/api.html
-            videojs('vid1').ready(function () {
+            videojs('video').ready(function () {
                 var myPlayer = this;
-                myPlayer.src({type: 'video/youtube', src: 'https://www.youtube.com/watch?v=E5DFIjj19kw'});
+                myPlayer.qualityPickerPlugin();
+                myPlayer.src({type: 'application/x-mpegURL', src: 'http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8'});
 
                 $("#change").on('click', function () {
-                    myPlayer.src({type: 'video/youtube', src: 'https://www.youtube.com/watch?v=WhHfjsOl8Tc'});
+                  var new_url = $("#myInput").val();
+                    myPlayer.src({type: 'application/x-mpegURL', src: new_url});
                 });
             });
 
         });
     })(jQuery);
-</script>
-</body>
+
+    </script>
+  </body>
 </html>
+
