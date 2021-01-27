@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Video.js + hls.js</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet"><!-- https://getbootstrap.com -->
+    <link href="https://vjs.zencdn.net/5.19.2/video-js.css" rel="stylesheet"><!-- https://videojs.com -->
+
+<link href="https://cdn.jsdelivr.net/npm/videojs-playlist-ui@3.8.0/dist/videojs-playlist-ui.css" rel="stylesheet">
+
+   
+  </head>
+  <body class="bg-light">
+    
+    <video id="video" class="video-js vjs-default-skin" controls ></video>
+    <div class="vjs-playlist">
+        
+    </div>
+    <input type="text" placeholder="paste your link here" id="myInput" size="50">
+<button id="add">Add video</button>
+    <style>html,
+      body {
+        width: 100%;
+      }
+      .video-js {
+      height: 240px;
+      width: 450px;
+      float: left;
+    }
+    .vjs-playlist {
+      width: 200px;
+      height: 240px;
+    }
+
+  /* CUSTOM BUTTONS */
+  [class^="icon-"]:before,
+  [class*=" icon-"]:before {
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    display: inline-block;
+    text-decoration: inherit;
+  }
+  .icon-angle-left:before {
+      content: "\f104";
+  }
+  .icon-angle-right:before {
+      content: "\f105";
+  }
+  
+  .video-js .icon-angle-right, .video-js .icon-angle-left {
+      cursor: pointer;
+      -webkit-box-flex: none;
+      -moz-box-flex: none;
+      -webkit-flex: none;
+      -ms-flex: none;
+      flex: none;
+  }
+  
+    </style>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://vjs.zencdn.net/5.19.2/video.js"></script>
+    <script src="js/hls.min.js?v=v0.9.1"></script><!-- https://github.com/video-dev/hls.js -->
+    <script src="js/videojs5-hlsjs-source-handler.min.js?v=0.3.1"></script><!-- https://github.com/streamroot/videojs-hlsjs-plugin -->
+    <script src="js/vjs-quality-picker.js?v=v0.0.2"></script><!-- https://github.com/streamroot/videojs-quality-picker -->
+
+<script src="https://cdn.jsdelivr.net/npm/videojs-playlist@4.3.1/dist/videojs-playlist.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-playlist-ui@3.8.0/dist/videojs-playlist-ui.min.js"></script>
+    <script>
+
+    
+        $(document).ready(function () {
+          var types = {mp4:'video/mp4',webm:'video/webm', m3u: 'application/x-mpegURL'};
+var videoList = [{
+  sources: [{
+    src: 'http://media.w3.org/2010/05/sintel/trailer.mp4',
+    type: types.mp4
+  }],
+  poster: 'https://www.rt.com/static/img/og-logo-rt.png',name : 'Video 1',
+}, {
+  sources: [{
+    src: 'https://content.jwplatform.com/manifests/yp34SRmf.m3u8',
+    type: types.m3u
+  }],
+  poster: 'http://media.w3.org/2010/05/bunny/poster.png',name : 'Video 2',
+}, {
+  sources: [{
+    src: 'https://vjs.zencdn.net/v/oceans.mp4',
+    type: types.mp4
+  }],
+  poster: 'https://vjs.zencdn.net/v/oceans.png',name : 'Video 3',
+}, {
+  sources: [{
+    src: 'http://media.w3.org/2010/05/bunny/movie.mp4',
+    type: types.mp4
+  }],
+  poster: 'http://media.w3.org/2010/05/bunny/poster.png',name : 'Video 4',
+}, {
+  sources: [{
+    src: 'http://media.w3.org/2010/05/video/movie_300.mp4',
+    type: types.mp4
+  }],
+  poster: 'http://media.w3.org/2010/05/video/poster.png',name : 'Video 5',
+}];
+
+            // An example of playing with the Video.js javascript API
+            // Will start the video and then switch the source 3 seconds latter
+            // You can look at the doc there: http://docs.videojs.com/docs/guides/api.html
+            videojs('video').ready(function () {
+                var myPlayer = this;
+                myPlayer.qualityPickerPlugin();
+                myPlayer.playlist(videoList);
+                myPlayer.playlistUi();
+
+                $("#add").on('click', function () {
+                 var currentplaylist= myPlayer.playlist();
+                 let position=myPlayer.playlist.currentItem();
+                 let lenh=videoList.length + 1;
+                 console.log('len',lenh);
+                   var new_url = $("#myInput").val();
+                  videoList.push( {
+  sources: [{
+    src: new_url?new_url:'https://content.jwplatform.com/manifests/yp34SRmf.m3u8',
+    type: 'application/x-mpegURL'
+  }],
+  poster: 'http://media.w3.org/2010/05/bunny/poster.png',name : 'Video '+lenh,
+});
+
+myPlayer.playlist(videoList,position);
+ console.table(videoList);
+ var updatedplaylist= myPlayer.playlist();
+                  console.log('updatedplaylist',updatedplaylist);
+                });
+   
+                var button = videojs.getComponent('Button');
+//Close button
+var closeButton = videojs.extend(button, {
+    constructor: function() {
+      button.apply(this, arguments);
+      this.controlText("Exit Course");
+      this.addClass('vjs-icon-cancel');
+    },
+    handleClick: function() {
+      this.player().dispose();
+    }
+  });
+  videojs.registerComponent('closeButton', closeButton);
+  myPlayer.getChild('controlBar').addChild('closeButton', {});
+
+
+// Extend default
+var PrevButton = videojs.extend(button, {
+  //constructor: function(player, options) {
+  constructor: function() {
+    button.apply(this, arguments);
+    this.addClass('icon-angle-left');
+    this.controlText("Previous");
+  },
+
+
+  handleClick: function() {
+    console.log('clickedPrevious');
+    myPlayer.playlist.previous();
+  }
+});
+
+videojs.registerComponent('PrevButton', PrevButton);
+
+myPlayer.getChild('controlBar').addChild('PrevButton', {}, 0);
+           
+
+       
+/* Next BUTTON */
+//var Button = videojs.getComponent('Button');
+
+// Extend default
+var NextButton = videojs.extend(button, {
+  constructor: function() {
+    button.apply(this, arguments);
+    this.addClass('icon-angle-right');
+    this.controlText("Next");
+  },
+
+  handleClick: function() {
+    console.log('clickednext');
+    myPlayer.playlist.next();
+  }
+}); 
+
+videojs.registerComponent('NextButton', NextButton);
+
+myPlayer.getChild('controlBar').addChild('NextButton', {}, 2);             
+
+});
+   
+
+});
+  
+
+    </script>
+  </body>
+</html>
+
