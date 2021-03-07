@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>videojs - quality menu with out plugins</title>
+  <link rel='stylesheet' href='https://vjs.zencdn.net/7.1.0/video-js.css'>
+  <link rel="stylesheet" href="./style.css">
+<style>
+  
+body {
+	font-family: 'Montserrat', sans-serif;
+	line-height: 1.6;
+	margin: 0;
+	min-height: 100vh;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+h2,
+h3,
+a {
+	color: #34495e;
+}
+
+a {
+	text-decoration: none;
+}
+
+
+.logo {
+	margin: 0;
+	font-size: 1.45em;
+}
+
+.main-nav {
+	margin-top: 5px;
+
+}
+.logo a,
+.main-nav a {
+	padding: 10px 15px;
+	text-transform: uppercase;
+	text-align: center;
+	display: block;
+}
+
+.main-nav a {
+	color: #34495e;
+	font-size: .99em;
+}
+
+.main-nav a:hover {
+	color: #718daa;
+}
+
+
+
+.header {
+	padding-top: .5em;
+	padding-bottom: .5em;
+	border: 1px solid #a2a2a2;
+	background-color: #f4f4f4;
+	-webkit-box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+
+/* ================================= 
+  Media Queries
+==================================== */
+
+
+
+
+@media (min-width: 769px) {
+	.header,
+	.main-nav {
+		display: flex;
+	}
+	.header {
+		flex-direction: column;
+		align-items: center;
+    	.header{
+		width: 80%;
+		margin: 0 auto;
+		max-width: 1150px;
+	}
+	}
+
+}
+
+@media (min-width: 1025px) {
+	.header {
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+}
+.contentMenu {
+  position: relative;
+  width: 4em;
+}
+.contentMenu .icon {
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+.contentMenu .icon:hover {
+  cursor: pointer;
+  color: gray;
+}
+.contentMenu .icon:hover + .menu {
+  transform: translate(-50%, -30px);
+  visibility: visible;
+  opacity: 1;
+}
+.contentMenu .menu {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transition: all 200ms;
+  display: flex;
+  justify-content: center;
+  flex-direction: column-reverse;
+  width: 100px;
+  transform: translate(-50%, -20px);
+  visibility: hidden;
+  opacity: 0;
+}
+.contentMenu .menu:hover {
+  transform: translate(-50%, -30px);
+  visibility: visible;
+  opacity: 1;
+}
+.contentMenu .menu:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: -15px;
+  left: calc(50% - 15px);
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 15px solid #333;
+}
+
+#auto {
+  background: #333;
+}
+#auto .current {
+  font-size: 10px;
+  margin-left: 3px;
+}
+#auto .current:before {
+  margin-left: -3px;
+  content: "(";
+  position: absolute;
+}
+#auto .current:after {
+  content: ")";
+  position: absolute;
+}
+
+.item {
+  position: relative;
+  text-align: center;
+  border: 0;
+  padding: 10px;
+  background: #444;
+}
+.item.selected {
+  background: #333;
+  font-weight: bold;
+}
+.item.selected:before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 50%;
+  border-radius: 50%;
+  background: #4caf50;
+  left: 10px;
+  transform: translateY(-50%);
+}
+.item:hover {
+  background: #333;
+  cursor: pointer;
+}
+  
+  </style>
+</head>
+<body>
+  <header class="header">
+		<h1 class="logo"><a href="#">Flexbox</a></h1>
+      <ul class="main-nav">
+          <li><a href="./index.html">Quality selector</a></li>
+          <li><a href="./index2.html">Quality selector 2</a></li>
+          <li><a href="./index3.html">Load url</a></li>
+          <li><a href="./index4.html">Playlist</a></li>
+        <li><a href="./index5.html">Dynamic player</a></li>
+        <li><a href="./index6.html">Quality selector<sub>(No plugins)</sub></a></li>
+      </ul>
+	</header> 
+<!-- partial:index.partial.html -->
+<div class="container">
+  <video id=my-video class="video-js vjs-default-skin "  width="640" height="360" controls>
+       
+    <!-- <source     
+       src="https://content.jwplatform.com/manifests/yp34SRmf.m3u8"
+        type="application/x-mpegURL"> -->
+    <!-- <source     
+       src="https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
+        type="application/x-mpegURL"> -->
+  
+    <source     
+       src="https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd"
+        type="application/dash+xml">
+    <!-- <source     
+       src="https://livesim.dashif.org/livesim/chunkdur_1/ato_7/testpic4_8s/Manifest.mpd"
+        type="application/dash+xml"> -->
+
+    </video>
+
+    
+Works with both mpd and m3u8 links, uncomment the source url from the code
+</div>
+<!-- partial -->
+  <script src='https://vjs.zencdn.net/7.2.3/video.js'></script>
+  <script>
+  videojs.Hls.xhr.beforeRequest = function (options) {
+  /*
+   * Modifications to requests that will affect every player.
+   */
+
+  let newUri = options.uri.includes('.ts') ? options.uri + "?q=test" : options.uri;
+
+  return {
+    ...options,
+    uri: newUri };
+
+};
+
+
+
+let player = videojs("my-video", {responsive: true}, () => {
+  console.log("Start");
+
+
+  player.one("loadedmetadata", () => {
+
+    let qualities = player.
+    tech({ IWillNotUseThisInPlugins: true }).
+    hls.representations();
+console.log('qualities',qualities);
+    createButtonsQualities({
+      class: "item",
+      qualities: qualities,
+      father: player.controlBar.el_ });
+
+
+    player.play();
+
+    // ---------------------------------------------- //
+
+    function createAutoQualityButton(params) {
+      let button = document.createElement("div");
+
+      button.id = "auto";
+      button.innerText = `Auto`;
+
+      button.classList.add("selected");
+
+      if (params && params.class) button.classList.add(params.class);
+
+      button.addEventListener("click", () => {
+        removeSelected(params);
+        button.classList.add("selected");
+        qualities.map(quality => quality.enabled(true));
+      });
+
+      return button;
+    }
+
+    function createButtonsQualities(params) {
+
+      let contentMenu = document.createElement('div');
+      let menu = document.createElement('div');
+      let icon = document.createElement('div');
+
+      let fullscreen = params.father.querySelector('.vjs-fullscreen-control');
+      contentMenu.appendChild(icon);
+      contentMenu.appendChild(menu);
+      fullscreen.before(contentMenu);
+
+      menu.classList.add('menu');
+      icon.classList.add('icon', 'vjs-icon-cog');
+      contentMenu.classList.add('contentMenu');
+
+      let autoButton = createAutoQualityButton(params);
+
+      menu.appendChild(autoButton);
+
+      qualities.sort((a, b) => {
+        return a.height > b.height ? 1 : 0;
+      });
+
+      qualities.map(quality => {
+        let button = document.createElement("div");
+
+        if (params && params.class) button.classList.add(params.class);
+
+        button.id = `${quality.height}`;
+        button.innerText = quality.height + "p";
+
+        button.addEventListener("click", () => {
+          resetQuality(params);
+          button.classList.add("selected");
+          quality.enabled(true);
+        });
+
+        menu.appendChild(button);
+      });
+
+      setInterval(() => {
+        let auto = document.querySelector("#auto");
+        current = player.
+        tech({ IWillNotUseThisInPlugins: true }).
+        hls.selectPlaylist().attributes.RESOLUTION.height;
+        console.log(current);
+
+        document.querySelector("#auto").innerHTML = auto.classList.contains(
+        "selected") ?
+
+        `Auto <span class='current'>${current}p</span>` :
+        "Auto";
+      }, 1000);
+
+
+    }
+
+    function removeSelected(params) {
+      document.querySelector("#auto").classList.remove("selected");
+      [...document.querySelectorAll(`.${params.class}`)].map(quality => {
+        quality.classList.remove("selected");
+      });
+    }
+
+    function resetQuality(params) {
+      removeSelected(params);
+
+      for (let quality of params.qualities) {
+        quality.enabled(false);
+      }
+    }
+  });
+});</script>
+
+</body>
+</html>
