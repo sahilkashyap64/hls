@@ -4,7 +4,7 @@ The external library that helps in appending the resolution selector button work
 if you use it with higher version of video.js ,you might run into errors
 
 # [Video.js - HTML5 Video Player][vjs]
-
+# [Player In Action](https://sahilkashyap64.github.io/hls/index.html)
 
 # Video player to play HLS video and have a video quality switch button 
 
