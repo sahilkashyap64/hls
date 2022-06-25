@@ -62,6 +62,12 @@ $ cd hls
         player.play();
     
 ```
+### quality selector
+
+https://user-images.githubusercontent.com/32007662/175784040-9c7a633f-704e-4d9d-8d08-f9a19efe1bf8.mp4
+
+
+
 ---
 
 **index2.html**
@@ -91,6 +97,12 @@ $ cd hls
         player.dvrux();
     
 ```
+index2:quality selector with new library
+
+
+https://user-images.githubusercontent.com/32007662/175784474-34d0f9d3-1795-439e-aa5b-702a433f9593.mp4
+
+
 ---
 ---
 
@@ -116,6 +128,12 @@ $ cd hls
         });
     
 ```
+index3:quality selector , play any HLS link
+
+
+https://user-images.githubusercontent.com/32007662/175784493-0a4ac953-e37a-4018-bcfa-3d0bb77b8c16.mp4
+
+
 ---
 ---
 
@@ -246,6 +264,14 @@ myPlayer.getChild('controlBar').addChild('NextButton', {}, 2);
 });
     
 ```
+
+index4:playlist, jump to next and previous video
+  (next and prev btn didn't render properly)
+
+
+https://user-images.githubusercontent.com/32007662/175784532-3db02af0-5a5c-4bb6-8cc8-e1db52e1314c.mp4
+
+
 ---
 ---
 
@@ -413,6 +439,12 @@ return ext;
 }
     
 ```
+index5:play anykind of link eg: HLS,DASH,youtube,webm
+
+
+https://user-images.githubusercontent.com/32007662/175784547-71b9f15f-5933-4746-8e51-87cce26cc6d2.mp4
+
+
 ---
 
 ---
@@ -549,6 +581,12 @@ console.log('qualities',qualities);
 });
     
 ```
+index6:Quality selector without library
+
+
+https://user-images.githubusercontent.com/32007662/175784642-dcaf94e9-c4a5-4ecb-9b95-fbde97e16e17.mp4
+
+
 ---
 
 
