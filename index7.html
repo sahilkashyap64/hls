@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video.js Quality Selector</title>
+  <!-- Video.js CSS -->
+  <link href="https://vjs.zencdn.net/8.0.0/video-js.css" rel="stylesheet">
+  <!-- jb-videojs-hls-quality-selector CSS -->
+  <link href="https://unpkg.com/jb-videojs-hls-quality-selector/dist/css/jb-videojs-hls-quality-selector.css" rel="stylesheet">
+</head>
+<body>
+<h3> Using video js 8</h3>
+  <video id="my-video" class="video-js vjs-default-skin" width="640" height="360" controls>
+
+    <source src="https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8" type="application/x-mpegURL">
+    <!-- <source src="https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd" type="application/dash+xml"> -->
+  </video>
+
+  <!-- Video.js -->
+  <script src="https://vjs.zencdn.net/8.0.0/video.js"></script>
+  <!-- videojs-contrib-quality-levels plugin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-quality-levels/2.0.15/videojs-contrib-quality-levels.min.js"></script>
+  <!-- jb-videojs-hls-quality-selector -->
+  <script src="https://unpkg.com/jb-videojs-hls-quality-selector"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const player = videojs('my-video');
+
+      player.ready(function() {
+        //player.qualityLevels();
+        player.hlsQualitySelector({
+       displayCurrentQuality: true,
+          });
+      });
+    });
+  </script>
+</body>
+</html>
