@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>DRM Video Player</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <!-- Video.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.10.1/dist/video-js.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">DRM Video Player</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <video id="player" class="video-js vjs-default-skin" controls width="600" height="300">
+                <source src="" type="">
+            </video>
+            <div class="mt-3">
+                <input type="text" id="videoUrl" class="form-control" placeholder="Paste your video URL here" value="https://livesim.dashif.org/livesim/testpic_2s/Manifest.mpd">
+                <button id="changeVideo" class="btn btn-primary mt-2">Change Video</button>
+            </div>
+            <div class="mt-3">
+                <p>Example URLs:</p>
+                <ul>
+                    <li>http://playready.directtaps.net/smoothstreaming/SSWSS720H264/SuperSpeedway_720.ism/Manifest</li>
+                    <li>http://videos.electroteque.org/playready/big_buck_bunny.ism/Manifest</li>
+                    <li>https://vm2.dashif.org/livesim/testpic_2s/Manifest.mpd</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- Video.js and DRM scripts -->
+<script src="https://cdn.jsdelivr.net/npm/video.js@7.10.1/dist/video.min.js"></script>
+<script src="https://s3.amazonaws.com/cdn.keyos.com/html5/videojs-contrib-eme/3.5.4/videojs-contrib-eme.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var player = videojs('player', {
+            autoplay: true,
+            controls: true,
+            controlBar: {
+                liveDisplay: true,
+                pictureInPictureToggle: true,
+                fullscreenToggle: true,
+            }
+        });
+
+        player.eme({
+            emeHeaders: {
+                'customdata': 'xxx' // Replace 'xxx' with your actual custom data if needed
+            }
+        });
+
+        player.src({
+            src: 'https://livesim.dashif.org/livesim/testpic_2s/Manifest.mpd',
+            type: 'application/dash+xml',
+            keySystems: {
+                'com.widevine.alpha': 'https://wv-keyos.licensekeyserver.com/',
+                'com.microsoft.playready': 'https://pr-keyos.licensekeyserver.com/core/rightsmanager.asmx'
+            }
+        });
+
+        $('#changeVideo').click(function() {
+            var newUrl = $('#videoUrl').val();
+            var newType = newUrl.endsWith('.m3u8') ? 'application/x-mpegURL' : 'application/dash+xml';
+            player.src({
+                src: newUrl,
+                type: newType,
+                keySystems: {
+                    'com.widevine.alpha': 'https://wv-keyos.licensekeyserver.com/',
+                    'com.microsoft.playready': 'https://pr-keyos.licensekeyserver.com/core/rightsmanager.asmx'
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
